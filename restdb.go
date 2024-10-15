@@ -71,3 +71,41 @@ func InsertUser(u User) bool {
 	stmt.Exec(u.Username, u.Password, u.LastLogin, u.Admin, u.Active)
 	return true
 }
+
+func UserValid(u User) bool {
+	db := ConnectPostgres()
+	if db == nil {
+		fmt.Println("Cannot connect to PostgreSQL!")
+		db.Close()
+		return false
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM users WHERE Username = $1 \n", u.Username)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	var (
+		temp   = User{}
+		c1     int
+		c2, c3 string
+		c4     int64
+		c5, c6 int
+	)
+
+	for rows.Next() {
+		err = rows.Scan(&c1, &c2, &c3, &c4, &c5, &c6)
+		if err != nil {
+			log.Println(err)
+			return false
+		}
+		temp = User{c1, c2, c3, c4, c5, c6}
+	}
+
+	if u.Username == temp.Username && u.Password == temp.Password {
+		return true
+	}
+	return false
+}
