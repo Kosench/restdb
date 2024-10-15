@@ -72,6 +72,34 @@ func InsertUser(u User) bool {
 	return true
 }
 
+func DeleteUser(ID int) bool {
+	db := ConnectPostgres()
+	if db == nil {
+		fmt.Println("Cannot connect to PostgreSQL!")
+		return false
+	}
+	defer db.Close()
+
+	t := FindUserID(ID)
+	if t.ID == 0 {
+		log.Println("User", ID, "does not exist.")
+		return false
+	}
+
+	stmt, err := db.Prepare("DELETE FROM users WHERE ID = $1")
+	if err != nil {
+		log.Println("DELETE User", err)
+		return false
+	}
+
+	_, err = stmt.Exec(ID)
+	if err != nil {
+		log.Println("DELETE User", err)
+		return false
+	}
+	return true
+}
+
 func UserValid(u User) bool {
 	db := ConnectPostgres()
 	if db == nil {
