@@ -304,7 +304,7 @@ func IsUserAdmin(u User) bool {
 	return false
 }
 
-func UserValid(u User) bool {
+func IsUserValid(u User) bool {
 	db := ConnectPostgres()
 	if db == nil {
 		fmt.Println("Cannot connect to PostgreSQL!")
