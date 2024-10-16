@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
 type User struct {
