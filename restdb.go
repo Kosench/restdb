@@ -14,7 +14,7 @@ type User struct {
 	Password  string
 	LastLogin int64
 	Admin     int
-	Active    int64
+	Active    int
 }
 
 var (
