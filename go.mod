@@ -1,4 +1,4 @@
-module restdb
+module github.com/Kosench/restdb
 
 go 1.22.3
 
